@@ -1,0 +1,77 @@
+{
+  "key": "sticker-management",
+  "name": "sticker-management!",
+  "description": "My very first HipChat add-on",
+  "vendor": {
+    "name": "Angry Nerds",
+    "url": "https://www.hipchat.com"
+  },
+  "links": {
+    "self": "{{localBaseUrl}}/atlassian-connect.json",
+    "homepage": "{{localBaseUrl}}"
+  },
+  "capabilities": {
+    "hipchatApiConsumer": {
+      "scopes": [
+        "send_notification",
+        "view_room"
+      ]
+    },
+    "installable": {
+      "callbackUrl": "{{localBaseUrl}}/installable"
+    },
+    "configurable": {
+      "url": "{{localBaseUrl}}/config"
+    },
+    "webhook": {
+      "url": "{{localBaseUrl}}/webhook",
+      "pattern": "^/hello",
+      "event": "room_message",
+      "name": "Hello!",
+      "authentication": "jwt"
+    },
+    "dialog": [
+      {
+        "key": "sample.dialog",
+        "title": {
+          "value": "Add sticker pack!"
+        },
+        "url": "{{localBaseUrl}}/dialog",
+        "options": {
+          "style": "normal",
+          "primaryAction": {
+            "name": {
+              "value": "Add!!!1"
+            },
+            "key": "sample.dialog.action",
+            "enabled": true
+          },
+          "size": {
+            "width": "400px",
+            "height": "50px"
+          }
+        }
+      }
+    ],
+    "action": [
+      {
+        "key": "add.sticker.action",
+        "name": {
+          "value": "Add sticker"
+        },
+        "target": "sample.dialog",
+        "location": "hipchat.message.action",
+        "conditions": [
+          {
+            "condition": "message_matches",
+            "params": {
+              "regex": {
+                "pattern":"^/telegramSticker"
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
