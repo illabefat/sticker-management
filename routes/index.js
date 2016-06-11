@@ -116,7 +116,7 @@ module.exports = function (app, addon) {
   app.get('/dialog',
     addon.authenticate(),
     function (req, res) {
-      console.log(stickerPacks().getPacksByUser(12));
+      stickerPacks().getPacksByUser(12);
       res.render('dialog', {
         identity: req.identity
       });

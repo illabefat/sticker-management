@@ -14,14 +14,16 @@ module.exports = function () {
                 if (err) throw err;
                 console.log('Connected to postgres! Getting schemas...');
 
+                var sql = "SELECT stickers.packid, stickers.url\n" +
+                    "FROM hipchat_users, stickers, users_packs\n" +
+                    "WHERE\n" +
+                    "hipchat_users.userid = $1 and\n" +
+                    "hipchat_users.id = users_packs.userid and\n" +
+                    "stickers.packid = users_packs.packid\n" +
+                    "ORDER BY stickers.packid asc;";
+
                 client
-                    .query("SELECT stickers.packid, stickers.url\n" +
-                        "FROM hipchat_users, stickers, users_packs\n" +
-                        "WHERE\n" +
-                        "hipchat_users.userid = '" + userId + "' and\n" +
-                        "hipchat_users.id = users_packs.userid and\n" +
-                        "stickers.packid = users_packs.packid\n" +
-                        "ORDER BY stickers.packid asc;")
+                    .query(sql, [userId])
                     .on('row', function(row) {
                         console.log(JSON.stringify(row));
                         result.push(JSON.stringify(row));
